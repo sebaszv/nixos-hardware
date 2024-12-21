@@ -1,18 +1,11 @@
-{ ... }:
-
 {
   imports = [
-    ../../../../common/cpu/amd
-    # Better power-savings from AMD PState:
-    ../../../../common/cpu/amd/pstate.nix
-    ../../../../common/gpu/amd
-    ../../../../common/pc/laptop
-    ../../../../common/pc/ssd
+    ../../../../../common/pc/laptop
+    ../../../../../common/pc/ssd
   ];
 
   # Configure basic system settings:
   boot = {
-    kernelModules = [ "kvm-amd" ];
     kernelParams = [
       "mem_sleep_default=deep"
       "pcie_aspm.policy=powersupersave"

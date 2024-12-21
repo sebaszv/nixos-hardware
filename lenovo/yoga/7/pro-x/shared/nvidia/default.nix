@@ -1,26 +1,30 @@
-# Including this file will enable the NVidia driver, and PRIME offload
-
-{ lib, pkgs, ... }:
-
-let
-  inherit (lib) mkDefault;
-
-in {
+/*
+ * #######################################
+ * NVIDIA GeForce RTX 3050 Mobile (Ampere)
+ * #######################################
+ * This enables the NVIDIA driver and PRIME offload mode.
+ *
+ * This is for the NVIDIA GeForce RTX 3050 Mobile (Ampere) that
+ * Lenovo Slim Yoga 7 laptops have.
+ *
+ * Either `hardware.nvidia.prime.amdgpuBusId` or
+ * `hardware.nvidia.prime.intelBusId` should be set for it to work.
+ * This is set by the importing `lenovo-yoga-7-14ARH7-nvidia` and
+ * `lenovo-yoga-7-14IAH7-nvidia` profiles.
+ */
+{ lib, ... }:
+{
   imports = [
-    ../shared.nix
     ## "prime.nix" loads this, aleady:
     # ../../../../common/gpu/nvidia
     ../../../../../common/gpu/nvidia/prime.nix
     ../../../../../common/gpu/nvidia/ampere
   ];
 
-  # NVIDIA GeForce RTX 3050 Mobile (Ampere)
-  services.xserver.videoDrivers = mkDefault [ "nvidia" ];
+  services.xserver.videoDrivers = lib.mkDefault [ "nvidia" ];
 
   hardware = {
     ## Enable the Nvidia card, as well as Prime and Offload:
-    amdgpu.initrd.enable = true;
-
     nvidia = {
       modesetting.enable = true;
       nvidiaSettings = true;
@@ -30,7 +34,6 @@ in {
           enable = true;
           enableOffloadCmd = true;
         };
-        amdgpuBusId = "PCI:4:0:0";
         nvidiaBusId = "PCI:1:0:0";
       };
 
